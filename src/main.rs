@@ -1,15 +1,15 @@
-mod day1;
+mod day2;
 mod helpers;
 mod problem;
 
 use anyhow::Result;
-use helpers::input::get_input;
+use helpers::input::ProblemInput;
 
 use crate::problem::Problem;
 
 fn main() -> Result<()> {
-    let input = get_input(1)?;
-    let problem = day1::Day1::default();
+    let input = ProblemInput::load(2)?;
+    let problem = day2::Day2::default();
 
     println!("{}", "The answer to part 1 is:");
     println!("{}", problem.part1(&input)?);

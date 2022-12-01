@@ -2,15 +2,15 @@ use crate::{helpers::input::ProblemInput, problem::Problem};
 
 use anyhow::Result;
 
-pub struct Day0 {}
+pub struct Day2 {}
 
-impl Default for Day0 {
+impl Default for Day2 {
     fn default() -> Self {
         Self {}
     }
 }
 
-impl Problem<usize, usize> for Day0 {
+impl Problem<usize, usize> for Day2 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
         todo!()
     }
@@ -19,7 +19,6 @@ impl Problem<usize, usize> for Day0 {
         todo!()
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -33,12 +32,11 @@ mod tests {
 
     #[test]
     fn sample1() {
-        assert_eq!(0, Day0::default().part1(&sample()).unwrap())
+        assert_eq!(0, Day2::default().part1(&sample()).unwrap())
     }
 
-    
     #[test]
     fn sample2() {
-        assert_eq!(0, Day0::default().part2(&sample()).unwrap())
+        assert_eq!(0, Day2::default().part2(&sample()).unwrap())
     }
 }

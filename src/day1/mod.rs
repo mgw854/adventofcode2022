@@ -47,7 +47,7 @@ mod tests {
 
 10000";
 
-        crate::helpers::input::from_sample(input)
+        crate::helpers::input::ProblemInput::from_sample(input)
     }
 
     #[test]

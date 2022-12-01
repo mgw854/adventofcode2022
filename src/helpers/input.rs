@@ -7,26 +7,29 @@ pub struct ProblemInput {
     value: String,
 }
 
-pub fn get_input(day: u8) -> Result<ProblemInput> {
-    let path = format!(".\\src\\day{}\\input.txt", day);
-    let path = Path::new(&path);
-    let mut file = File::open(path)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
-    
-    Ok(ProblemInput {
-        day,
-        value: contents.replace("\r", ""),
-    })
-}
-
-#[cfg(test)]
-pub fn from_sample(sample: &str) -> ProblemInput {
-    ProblemInput { day: 0, value: sample.replace("\r", "") }
-}
-
 #[allow(dead_code)]
 impl ProblemInput {
+    pub fn load(day: u8) -> Result<ProblemInput> {
+        let path = format!(".\\src\\day{}\\input.txt", day);
+        let path = Path::new(&path);
+        let mut file = File::open(path)?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)?;
+
+        Ok(ProblemInput {
+            day,
+            value: contents.replace("\r", ""),
+        })
+    }
+
+    #[cfg(test)]
+    pub fn from_sample(sample: &str) -> ProblemInput {
+        ProblemInput {
+            day: 0,
+            value: sample.replace("\r", ""),
+        }
+    }
+
     pub fn parse_lines<T>(&self, parser: fn(&str) -> Result<T>) -> Result<Vec<T>> {
         self.value.lines().map(|s| parser(s.trim())).collect()
     }
