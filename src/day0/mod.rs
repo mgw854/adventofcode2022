@@ -19,3 +19,26 @@ impl Problem<usize, usize> for Day0 {
         todo!()
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn sample() -> ProblemInput {
+        let input = "";
+
+        crate::helpers::input::from_sample(input)
+    }
+
+    #[test]
+    fn sample1() {
+        assert_eq!(0, Day0::default().part1(&sample()).unwrap())
+    }
+
+    
+    #[test]
+    fn sample2() {
+        assert_eq!(0, Day0::default().part2(&sample()).unwrap())
+    }
+}

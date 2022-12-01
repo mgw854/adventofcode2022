@@ -26,3 +26,38 @@ impl Problem<usize, usize> for Day1 {
         Ok(sum)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn sample() -> ProblemInput {
+        let input = "1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000";
+
+        crate::helpers::input::from_sample(input)
+    }
+
+    #[test]
+    fn sample1() {
+        assert_eq!(24000, Day1::default().part1(&sample()).unwrap())
+    }
+
+    
+    #[test]
+    fn sample2() {
+        assert_eq!(45000, Day1::default().part2(&sample()).unwrap())
+    }
+}

@@ -20,6 +20,11 @@ pub fn get_input(day: u8) -> Result<ProblemInput> {
     })
 }
 
+#[cfg(test)]
+pub fn from_sample(sample: &str) -> ProblemInput {
+    ProblemInput { day: 0, value: sample.replace("\r", "") }
+}
+
 #[allow(dead_code)]
 impl ProblemInput {
     pub fn parse_lines<T>(&self, parser: fn(&str) -> Result<T>) -> Result<Vec<T>> {
