@@ -13,16 +13,21 @@ pub fn get_input(day: u8) -> Result<ProblemInput> {
     let mut file = File::open(path)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
+    
     Ok(ProblemInput {
         day,
-        value: contents,
+        value: contents.replace("\r", ""),
     })
 }
 
 #[allow(dead_code)]
 impl ProblemInput {
-    pub fn get_lines<T>(&self, parser: fn(&str) -> Result<T>) -> Result<Vec<T>> {
+    pub fn parse_lines<T>(&self, parser: fn(&str) -> Result<T>) -> Result<Vec<T>> {
         self.value.lines().map(|s| parser(s.trim())).collect()
+    }
+
+    pub fn parse_numbers(&self) -> Result<Vec<usize>> {
+        self.parse_lines(|x| x.parse::<usize>().map_err(|e| e.into()))
     }
 
     pub fn get_chars(&self) -> Vec<char> {

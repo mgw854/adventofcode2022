@@ -10,12 +10,19 @@ impl Default for Day1 {
     }
 }
 
-impl Problem<u8, u8> for Day1 {
-    fn part1(&self, input: &ProblemInput) -> Result<u8> {
-        todo!()
+impl Problem<usize, usize> for Day1 {
+    fn part1(&self, input: &ProblemInput) -> Result<usize> {
+        let energy = input.parse_sections(|x| x.parse::<usize>().map_err(|e| e.into()))?;
+
+        Ok(energy.iter().map(|v| v.iter().sum()).max().unwrap())
     }
 
-    fn part2(&self, input: &ProblemInput) -> Result<u8> {
-        todo!()
+    fn part2(&self, input: &ProblemInput) -> Result<usize> {
+        let energy = input.parse_sections(|x| x.parse::<usize>().map_err(|e| e.into()))?;
+
+        let mut cals = energy.iter().map(|v| v.iter().sum()).collect::<Vec<usize>>();
+        cals.sort();
+        let sum = cals.pop().unwrap() + cals.pop().unwrap() + cals.pop().unwrap();
+        Ok(sum)
     }
 }

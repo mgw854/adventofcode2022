@@ -10,12 +10,12 @@ impl Default for Day0 {
     }
 }
 
-impl Problem<u8, u8> for Day0 {
-    fn part1(&self, input: &ProblemInput) -> Result<u8> {
-        Ok(1)
+impl Problem<usize, usize> for Day0 {
+    fn part1(&self, input: &ProblemInput) -> Result<usize> {
+        todo!()
     }
 
-    fn part2(&self, input: &ProblemInput) -> Result<u8> {
-        Ok(2)
+    fn part2(&self, input: &ProblemInput) -> Result<usize> {
+        todo!()
     }
 }
