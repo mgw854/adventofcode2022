@@ -1,15 +1,15 @@
-mod year2015;
 mod helpers;
 mod problem;
+mod year2015;
 
+use crate::year2015::day1;
 use anyhow::Result;
 use helpers::input::ProblemInput;
-use crate::year2015::day1;
 
 use crate::problem::Problem;
 
 fn main() -> Result<()> {
-    let input = ProblemInput::load(1)?;
+    let input = ProblemInput::load(2015, 1)?;
     let problem = day1::Day1::default();
 
     println!("{}", "The answer to part 1 is:");

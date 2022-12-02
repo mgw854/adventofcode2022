@@ -9,8 +9,8 @@ pub struct ProblemInput {
 
 #[allow(dead_code)]
 impl ProblemInput {
-    pub fn load(day: u8) -> Result<ProblemInput> {
-        let path = format!(".\\src\\day{}\\input.txt", day);
+    pub fn load(year: u16, day: u8) -> Result<ProblemInput> {
+        let path = format!(".\\src\\year{}\\day{}\\input.txt", year, day);
         let path = Path::new(&path);
         let mut file = File::open(path)?;
         let mut contents = String::new();

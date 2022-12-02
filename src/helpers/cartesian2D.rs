@@ -97,40 +97,4 @@ impl Iterator for LinePointIterator {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn slope4x4() {
-        let start = Point { x: 5, y: 5 };
-        let end = Point { x: 1, y: 1 };
-        let slope = start.slope_between(&end);
-
-        assert_eq!(Slope { dx: 4, dy: 4 }, slope)
-    }
-
-    #[test]
-    fn slope_reduce4x4() {
-        let start = Point { x: 1, y: 1 };
-        let end = Point { x: 5, y: 5 };
-        let slope = start.slope_between(&end).reduce();
-
-        assert_eq!(Slope { dx: 1, dy: 1 }, slope)
-    }
-
-    #[test]
-    fn slope_iter_positives() {
-        let start = Point { x: 1, y: 1 };
-        let end = Point { x: 5, y: 5 };
-
-        let steps: Vec<Point> = Line { start, end }.into_iter().collect();
-
-        let expected = vec![
-            Point { x: 1, y: 1 },
-            Point { x: 2, y: 2 },
-            Point { x: 3, y: 3 },
-            Point { x: 4, y: 4 },
-            Point { x: 5, y: 5 },
-        ];
-
-        assert_eq!(expected, steps);
-    }
 }
