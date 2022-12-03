@@ -5,7 +5,7 @@ use super::graphplot::{Point, Slope};
 pub struct Map {
     width: usize,
     height: usize,
-    points_of_interest: HashSet<Point>
+    points_of_interest: HashSet<Point>,
 }
 
 impl Map {
@@ -13,8 +13,6 @@ impl Map {
         let mut width = 0;
         let mut height = 0;
         let mut points_of_interest: HashSet<Point> = HashSet::new();
-        
-        
 
         for (y, line) in input.lines().enumerate() {
             height = y;
@@ -25,7 +23,11 @@ impl Map {
             }
         }
 
-        Map { width, height, points_of_interest }
+        Map {
+            width,
+            height,
+            points_of_interest,
+        }
     }
 
     fn waypoint_hits(&self, start: &Point, slope: &Slope) -> usize {
