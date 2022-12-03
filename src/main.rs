@@ -1,4 +1,4 @@
-mod day2;
+mod day3;
 mod helpers;
 mod problem;
 
@@ -8,8 +8,8 @@ use helpers::input::ProblemInput;
 use crate::problem::Problem;
 
 fn main() -> Result<()> {
-    let input = ProblemInput::load(2)?;
-    let problem = day2::Day2::default();
+    let input = ProblemInput::load(3)?;
+    let problem = day3::Day3::default();
 
     println!("{}", "The answer to part 1 is:");
     println!("{}", problem.part1(&input)?);

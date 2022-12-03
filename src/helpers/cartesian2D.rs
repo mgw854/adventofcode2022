@@ -97,7 +97,7 @@ impl Iterator for LinePointIterator {
 #[cfg(test)]
 mod tests {
     use super::*;
-
+    /*
     #[test]
     fn slope4x4() {
         let start = Point { x: 5, y: 5 };
@@ -132,5 +132,5 @@ mod tests {
         ];
 
         assert_eq!(expected, steps);
-    }
+    }*/
 }
