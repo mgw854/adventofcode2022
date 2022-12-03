@@ -2,8 +2,8 @@ use std::ops::Add;
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
 pub struct Point {
-    pub x: i64,
-    pub y: i64,
+    pub x: usize,
+    pub y: usize,
 }
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
@@ -20,8 +20,8 @@ pub struct Line {
 impl Add<Slope> for Point {
     fn add(self, other: Slope) -> Self {
         Self {
-            x: self.x + other.dx,
-            y: self.y + other.dy,
+            x: (self.x as i64 + other.dx) as usize,
+            y: (self.y as i64 + other.dy) as usize,
         }
     }
     type Output = Point;
@@ -30,8 +30,8 @@ impl Add<Slope> for Point {
 impl Add<&Slope> for Point {
     fn add(self, other: &Slope) -> Self {
         Self {
-            x: self.x + other.dx,
-            y: self.y + other.dy,
+            x: (self.x as i64 + other.dx) as usize,
+            y: (self.y as i64 + other.dy) as usize,
         }
     }
     type Output = Point;
@@ -46,8 +46,8 @@ impl From<Slope> for f64 {
 impl Point {
     pub fn slope_between(&self, other: &Point) -> Slope {
         Slope {
-            dy: -1 * (self.y - other.y),
-            dx: -1 * (self.x - other.x),
+            dy: -1 * (self.y as i64 - other.y as i64),
+            dx: -1 * (self.x as i64 - other.x as i64),
         }
     }
 }
@@ -107,7 +107,6 @@ impl Iterator for LinePointIterator {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
     fn slope4x4() {
         let start = Point { x: 1, y: 1 };

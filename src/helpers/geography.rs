@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 
-use super::cartesian2D::{Point, Slope};
+use super::graphplot::{Point, Slope};
 
 pub struct Map {
-    width: i64,
-    height: i64,
+    width: usize,
+    height: usize,
     points_of_interest: HashSet<Point>
 }
 
@@ -21,11 +21,11 @@ impl Map {
             width = line.trim().len();
 
             for (x, _) in line.char_indices().filter(|(_, ch)| ch == &interest_marker) {
-                points_of_interest.insert(Point { x: x as i64, y: y as i64 });
+                points_of_interest.insert(Point { x, y });
             }
         }
 
-        Map { width: width as i64, height: height as i64, points_of_interest }
+        Map { width, height, points_of_interest }
     }
 
     fn waypoint_hits(&self, start: &Point, slope: &Slope) -> usize {
