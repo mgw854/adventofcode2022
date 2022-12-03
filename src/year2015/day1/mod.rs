@@ -31,7 +31,7 @@ impl Problem<usize, usize> for Day1 {
                     _ => 0,
                 };
 
-            if (pos == -1) {
+            if pos == -1 {
                 return Ok(i + 1);
             }
         }
