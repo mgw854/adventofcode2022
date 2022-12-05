@@ -13,7 +13,7 @@ impl Default for Day5 {
     }
 }
 
-impl Problem<String, usize> for Day5 {
+impl Problem<String, String> for Day5 {
     fn part1(&self, input: &ProblemInput) -> Result<String> {
         let (stack, instructions) = input.value().split_at(input.value().find("\n\n").unwrap());
 
@@ -45,8 +45,35 @@ impl Problem<String, usize> for Day5 {
         Ok(r)
     }
 
-    fn part2(&self, input: &ProblemInput) -> Result<usize> {
-        todo!()
+    fn part2(&self, input: &ProblemInput) -> Result<String> {
+        let (stack, instructions) = input.value().split_at(input.value().find("\n\n").unwrap());
+
+        let mut stacks = parse_stacks(stack);
+        let steps = parse_instructions(instructions);
+
+        for instruction in steps {
+            let mut intermediate = VecDeque::new();
+            
+            let source = stacks.get_mut(&instruction.from).unwrap();
+
+             for _ in 0..instruction.count {
+                intermediate.push_front(source.pop_back().unwrap());
+            }
+
+            let destination = stacks.get_mut(&instruction.to).unwrap();
+
+            for _ in 0..instruction.count {
+                destination.push_back(intermediate.pop_front().unwrap());
+            }
+        }
+
+        let mut r = String::new();
+
+        for i in 1..=stacks.len() {
+            r.push(*stacks.get(&i).unwrap().back().unwrap());
+        }
+            
+        Ok(r)
     }
 }
 
@@ -117,6 +144,6 @@ move 1 from 1 to 2";
     
     #[test]
     fn sample2() {
-        assert_eq!(0, Day5::default().part2(&sample()).unwrap())
+        assert_eq!("MCD", Day5::default().part2(&sample()).unwrap())
     }
 }
