@@ -59,8 +59,12 @@ impl ProblemInput {
             .map(|s| s.trim().split(",").map(|x| parser(x.trim())).collect())
             .collect()
     }
-
+    
     pub fn day(&self) -> u8 {
         self.day
+    }
+
+    pub fn value(&self) -> &str {
+        self.value.as_ref()
     }
 }

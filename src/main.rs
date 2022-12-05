@@ -9,7 +9,7 @@ use helpers::input::ProblemInput;
 use crate::problem::Problem;
 
 fn main() -> Result<()> {
-    let input = ProblemInput::load(2022, 4)?;
+    let input = ProblemInput::load(2022, 5)?;
     let problem = day5::Day5::default();
 
     println!("{}", "The answer to part 1 is:");
