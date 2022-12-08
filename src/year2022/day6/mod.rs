@@ -15,7 +15,7 @@ impl Problem<usize, usize> for Day6 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
         for (i, w) in input.get_chars().windows(4).enumerate() {
             if w.iter().unique().count() == 4 {
-                return Ok(i+4);
+                return Ok(i + 4);
             }
         }
 
@@ -25,14 +25,13 @@ impl Problem<usize, usize> for Day6 {
     fn part2(&self, input: &ProblemInput) -> Result<usize> {
         for (i, w) in input.get_chars().windows(14).enumerate() {
             if w.iter().unique().count() == 14 {
-                return Ok(i+14);
+                return Ok(i + 14);
             }
         }
 
         Ok(0)
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -49,7 +48,6 @@ mod tests {
         assert_eq!(7, Day6::default().part1(&sample()).unwrap())
     }
 
-    
     #[test]
     fn sample2() {
         assert_eq!(19, Day6::default().part2(&sample()).unwrap())

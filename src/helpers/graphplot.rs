@@ -75,6 +75,15 @@ impl IntoIterator for Line {
     type IntoIter = LinePointIterator;
 
     fn into_iter(self) -> Self::IntoIter {
+        if self.start == self.end {
+            return LinePointIterator {
+                ret: self.start,
+                end: self.end,
+                slope: Slope { dx: 1, dy: 1 },
+                trip: false,
+            };
+        }
+
         LinePointIterator {
             ret: self.start,
             end: self.end,
@@ -90,7 +99,7 @@ impl Iterator for LinePointIterator {
         if !self.trip {
             let old = self.ret;
 
-            if old.x == self.end.x {
+            if old.x == self.end.x && old.y == self.end.y {
                 self.trip = true;
             } else {
                 let next_point = old + self.slope;
@@ -140,6 +149,54 @@ mod tests {
             Point { x: 4, y: 4 },
             Point { x: 5, y: 5 },
         ];
+
+        assert_eq!(expected, steps);
+    }
+
+    #[test]
+    fn slope_iter_negative() {
+        let start = Point { x: 5, y: 5 };
+        let end = Point { x: 1, y: 1 };
+
+        let steps: Vec<Point> = Line { start, end }.into_iter().collect();
+
+        let expected = vec![
+            Point { x: 5, y: 5 },
+            Point { x: 4, y: 4 },
+            Point { x: 3, y: 3 },
+            Point { x: 2, y: 2 },
+            Point { x: 1, y: 1 },
+        ];
+
+        assert_eq!(expected, steps);
+    }
+
+    #[test]
+    fn slope_iter_vertical() {
+        let start = Point { x: 5, y: 1 };
+        let end = Point { x: 5, y: 5 };
+
+        let steps: Vec<Point> = Line { start, end }.into_iter().collect();
+
+        let expected = vec![
+            Point { x: 5, y: 1 },
+            Point { x: 5, y: 2 },
+            Point { x: 5, y: 3 },
+            Point { x: 5, y: 4 },
+            Point { x: 5, y: 5 },
+        ];
+
+        assert_eq!(expected, steps);
+    }
+
+    #[test]
+    fn slope_single_point_none() {
+        let start = Point { x: 5, y: 5 };
+        let end = Point { x: 5, y: 5 };
+
+        let steps: Vec<Point> = Line { start, end }.into_iter().collect();
+
+        let expected = vec![Point { x: 5, y: 5 }];
 
         assert_eq!(expected, steps);
     }

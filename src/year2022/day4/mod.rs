@@ -15,7 +15,10 @@ impl Default for Day4 {
 
 impl Problem<usize, usize> for Day4 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
-        let pairs = input.parse_lines(|x| x.parse::<AssignmentPair>().map_err(|e| anyhow!("Missing attribute: {}", "")))?;
+        let pairs = input.parse_lines(|x| {
+            x.parse::<AssignmentPair>()
+                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+        })?;
 
         let count = pairs.iter().filter(|p| p.is_one_strict_subset()).count();
 
@@ -23,7 +26,10 @@ impl Problem<usize, usize> for Day4 {
     }
 
     fn part2(&self, input: &ProblemInput) -> Result<usize> {
-        let pairs = input.parse_lines(|x| x.parse::<AssignmentPair>().map_err(|e| anyhow!("Missing attribute: {}", "")))?;
+        let pairs = input.parse_lines(|x| {
+            x.parse::<AssignmentPair>()
+                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+        })?;
 
         let count = pairs.iter().filter(|p| p.is_overlap()).count();
 
@@ -33,18 +39,22 @@ impl Problem<usize, usize> for Day4 {
 
 pub struct AssignmentPair {
     pub firstElf: RangeInclusive<usize>,
-    pub secondElf: RangeInclusive<usize>
+    pub secondElf: RangeInclusive<usize>,
 }
 
 impl AssignmentPair {
     fn is_one_strict_subset(&self) -> bool {
-        (self.firstElf.start() <= self.secondElf.start() && self.firstElf.end() >= self.secondElf.end()) ||
-        (self.secondElf.start() <= self.firstElf.start() && self.secondElf.end() >= self.firstElf.end())
+        (self.firstElf.start() <= self.secondElf.start()
+            && self.firstElf.end() >= self.secondElf.end())
+            || (self.secondElf.start() <= self.firstElf.start()
+                && self.secondElf.end() >= self.firstElf.end())
     }
-    
+
     fn is_overlap(&self) -> bool {
-        (self.firstElf.start() <= self.secondElf.start() && self.firstElf.end() >= self.secondElf.start()) ||
-        (self.secondElf.start() <= self.firstElf.start() && self.secondElf.end() >= self.firstElf.start())
+        (self.firstElf.start() <= self.secondElf.start()
+            && self.firstElf.end() >= self.secondElf.start())
+            || (self.secondElf.start() <= self.firstElf.start()
+                && self.secondElf.end() >= self.firstElf.start())
     }
 }
 
@@ -52,11 +62,18 @@ impl FromStr for AssignmentPair {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let matches: Vec<Vec<usize>> = s.split(',').map(|m| m.split('-').map(|r| r.parse::<usize>().unwrap()).collect::<Vec<usize>>()).collect();
+        let matches: Vec<Vec<usize>> = s
+            .split(',')
+            .map(|m| {
+                m.split('-')
+                    .map(|r| r.parse::<usize>().unwrap())
+                    .collect::<Vec<usize>>()
+            })
+            .collect();
 
         Ok(AssignmentPair {
             firstElf: RangeInclusive::new(matches[0][0], matches[0][1]),
-            secondElf: RangeInclusive::new(matches[1][0], matches[1][1])
+            secondElf: RangeInclusive::new(matches[1][0], matches[1][1]),
         })
     }
 }
@@ -81,7 +98,6 @@ mod tests {
         assert_eq!(2, Day4::default().part1(&sample()).unwrap())
     }
 
-    
     #[test]
     fn sample2() {
         assert_eq!(4, Day4::default().part2(&sample()).unwrap())

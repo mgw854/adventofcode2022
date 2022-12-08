@@ -1,4 +1,4 @@
-use std::{collections::{VecDeque, HashMap}, ops::Index};
+use std::collections::{HashMap, VecDeque};
 
 use crate::{helpers::input::ProblemInput, problem::Problem};
 
@@ -22,10 +22,10 @@ impl Problem<String, String> for Day5 {
 
         for instruction in steps {
             let mut intermediate = VecDeque::new();
-            
+
             let source = stacks.get_mut(&instruction.from).unwrap();
 
-             for _ in 0..instruction.count {
+            for _ in 0..instruction.count {
                 intermediate.push_front(source.pop_back().unwrap());
             }
 
@@ -41,7 +41,7 @@ impl Problem<String, String> for Day5 {
         for i in 1..=stacks.len() {
             r.push(*stacks.get(&i).unwrap().back().unwrap());
         }
-            
+
         Ok(r)
     }
 
@@ -53,10 +53,10 @@ impl Problem<String, String> for Day5 {
 
         for instruction in steps {
             let mut intermediate = VecDeque::new();
-            
+
             let source = stacks.get_mut(&instruction.from).unwrap();
 
-             for _ in 0..instruction.count {
+            for _ in 0..instruction.count {
                 intermediate.push_front(source.pop_back().unwrap());
             }
 
@@ -72,22 +72,25 @@ impl Problem<String, String> for Day5 {
         for i in 1..=stacks.len() {
             r.push(*stacks.get(&i).unwrap().back().unwrap());
         }
-            
+
         Ok(r)
     }
 }
 
 fn parse_stacks(stack: &str) -> HashMap<usize, VecDeque<char>> {
-    let mut stacks : HashMap<usize, VecDeque<char>> = HashMap::new();
+    let mut stacks: HashMap<usize, VecDeque<char>> = HashMap::new();
 
     for line in stack.lines().filter(|x| x.contains('[')) {
-        for (i,c) in line.char_indices().filter(|(_, x)| *x as u8 >= 65 && *x as u8 <= 90) {
-            if let Some(boxstack) = stacks.get_mut(&((i+3)/4)) {
+        for (i, c) in line
+            .char_indices()
+            .filter(|(_, x)| *x as u8 >= 65 && *x as u8 <= 90)
+        {
+            if let Some(boxstack) = stacks.get_mut(&((i + 3) / 4)) {
                 boxstack.push_front(c);
             } else {
                 let mut newboxstack = VecDeque::new();
                 newboxstack.push_front(c);
-                stacks.insert((i+3)/4, newboxstack);
+                stacks.insert((i + 3) / 4, newboxstack);
             }
         }
     }
@@ -105,7 +108,7 @@ fn parse_instructions(instructions: &str) -> Vec<MoveInstructions> {
         let from = usize::from_str_radix(&capture["from"], 10).unwrap();
         let to = usize::from_str_radix(&capture["to"], 10).unwrap();
 
-        output.push(MoveInstructions { count, from, to })        
+        output.push(MoveInstructions { count, from, to })
     }
 
     output
@@ -114,9 +117,8 @@ fn parse_instructions(instructions: &str) -> Vec<MoveInstructions> {
 struct MoveInstructions {
     count: usize,
     from: usize,
-    to: usize
+    to: usize,
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -141,7 +143,6 @@ move 1 from 1 to 2";
         assert_eq!("CMZ", Day5::default().part1(&sample()).unwrap())
     }
 
-    
     #[test]
     fn sample2() {
         assert_eq!("MCD", Day5::default().part2(&sample()).unwrap())

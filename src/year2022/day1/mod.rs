@@ -1,12 +1,12 @@
-use crate::{problem::Problem, helpers::input::ProblemInput};
+use crate::{helpers::input::ProblemInput, problem::Problem};
 
 use anyhow::Result;
 
-pub struct Day1 { }
+pub struct Day1 {}
 
 impl Default for Day1 {
     fn default() -> Self {
-        Self {  }
+        Self {}
     }
 }
 
@@ -20,7 +20,10 @@ impl Problem<usize, usize> for Day1 {
     fn part2(&self, input: &ProblemInput) -> Result<usize> {
         let energy = input.parse_sections(|x| x.parse::<usize>().map_err(|e| e.into()))?;
 
-        let mut cals = energy.iter().map(|v| v.iter().sum()).collect::<Vec<usize>>();
+        let mut cals = energy
+            .iter()
+            .map(|v| v.iter().sum())
+            .collect::<Vec<usize>>();
         cals.sort();
         let sum = cals.pop().unwrap() + cals.pop().unwrap() + cals.pop().unwrap();
         Ok(sum)
@@ -55,7 +58,6 @@ mod tests {
         assert_eq!(24000, Day1::default().part1(&sample()).unwrap())
     }
 
-    
     #[test]
     fn sample2() {
         assert_eq!(45000, Day1::default().part2(&sample()).unwrap())
