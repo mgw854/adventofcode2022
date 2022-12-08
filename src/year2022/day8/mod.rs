@@ -37,7 +37,7 @@ impl Problem<usize, usize> for Day8 {
                     Interest {
                         height: *t,
                         visible: false,
-                        scenic_score: 0
+                        scenic_score: 0,
                     },
                 );
                 maxx = x;
@@ -65,7 +65,7 @@ impl Problem<usize, usize> for Day8 {
                 }
             }
         }
-        
+
         Ok(trees.iter().filter(|t| t.1.visible).count())
     }
 
@@ -92,7 +92,7 @@ impl Problem<usize, usize> for Day8 {
                     Interest {
                         height: *t,
                         visible: false,
-                        scenic_score: 0
+                        scenic_score: 0,
                     },
                 );
                 maxx = x;
@@ -112,28 +112,72 @@ impl Problem<usize, usize> for Day8 {
 
                 let current_height = trees.get(&Point { x, y }).unwrap().height;
 
-
                 let score = get_scores(current_height, Point { x, y }, &trees, maxx, maxy);
-                
-                    trees.entry(Point { x, y }).and_modify(|tree| {
-                        tree.scenic_score = score;
-                    });
-                
+
+                trees.entry(Point { x, y }).and_modify(|tree| {
+                    tree.scenic_score = score;
+                });
             }
         }
-        
+
         Ok(trees.iter().map(|t| t.1.scenic_score).max().unwrap())
-        }
+    }
 }
 
-fn is_visible_any(current_height: u8, point: Point, trees: &HashMap<Point, Interest>, maxx: usize, maxy: usize) -> bool {
-  is_visible(current_height, trees, Point { x: point.x - 1, y: point.y }, Point { x: 0, y: point.y }) ||
-  is_visible(current_height, trees, Point { x: point.x + 1, y: point.y }, Point { x: maxx, y: point.y }) ||
-  is_visible(current_height, trees, Point { x: point.x, y: point.y - 1 }, Point { x: point.x, y: 0 }) ||
-  is_visible(current_height, trees, Point { x: point.x, y: point.y + 1 }, Point { x: point.x, y: maxy })
+fn is_visible_any(
+    current_height: u8,
+    point: Point,
+    trees: &HashMap<Point, Interest>,
+    maxx: usize,
+    maxy: usize,
+) -> bool {
+    is_visible(
+        current_height,
+        trees,
+        Point {
+            x: point.x - 1,
+            y: point.y,
+        },
+        Point { x: 0, y: point.y },
+    ) || is_visible(
+        current_height,
+        trees,
+        Point {
+            x: point.x + 1,
+            y: point.y,
+        },
+        Point {
+            x: maxx,
+            y: point.y,
+        },
+    ) || is_visible(
+        current_height,
+        trees,
+        Point {
+            x: point.x,
+            y: point.y - 1,
+        },
+        Point { x: point.x, y: 0 },
+    ) || is_visible(
+        current_height,
+        trees,
+        Point {
+            x: point.x,
+            y: point.y + 1,
+        },
+        Point {
+            x: point.x,
+            y: maxy,
+        },
+    )
 }
 
-fn is_visible(current_height: u8, trees: &HashMap<Point, Interest>, start: Point, end: Point) -> bool {
+fn is_visible(
+    current_height: u8,
+    trees: &HashMap<Point, Interest>,
+    start: Point,
+    end: Point,
+) -> bool {
     let mut visible = true;
     let mut found = false;
 
@@ -152,15 +196,60 @@ fn is_visible(current_height: u8, trees: &HashMap<Point, Interest>, start: Point
     found && visible
 }
 
-fn get_scores(current_height: u8, point: Point, trees: &HashMap<Point, Interest>, maxx: usize, maxy: usize) -> usize {
-
-    get_score(current_height, trees, Point { x: point.x - 1, y: point.y }, Point { x: 0, y: point.y }) *
-    get_score(current_height, trees, Point { x: point.x + 1, y: point.y }, Point { x: maxx, y: point.y }) *
-    get_score(current_height, trees, Point { x: point.x, y: point.y - 1 }, Point { x: point.x, y: 0 }) *
-    get_score(current_height, trees, Point { x: point.x, y: point.y + 1 }, Point { x: point.x, y: maxy })
+fn get_scores(
+    current_height: u8,
+    point: Point,
+    trees: &HashMap<Point, Interest>,
+    maxx: usize,
+    maxy: usize,
+) -> usize {
+    get_score(
+        current_height,
+        trees,
+        Point {
+            x: point.x - 1,
+            y: point.y,
+        },
+        Point { x: 0, y: point.y },
+    ) * get_score(
+        current_height,
+        trees,
+        Point {
+            x: point.x + 1,
+            y: point.y,
+        },
+        Point {
+            x: maxx,
+            y: point.y,
+        },
+    ) * get_score(
+        current_height,
+        trees,
+        Point {
+            x: point.x,
+            y: point.y - 1,
+        },
+        Point { x: point.x, y: 0 },
+    ) * get_score(
+        current_height,
+        trees,
+        Point {
+            x: point.x,
+            y: point.y + 1,
+        },
+        Point {
+            x: point.x,
+            y: maxy,
+        },
+    )
 }
 
-fn get_score(current_height: u8, trees: &HashMap<Point, Interest>, start: Point, end: Point) -> usize {
+fn get_score(
+    current_height: u8,
+    trees: &HashMap<Point, Interest>,
+    start: Point,
+    end: Point,
+) -> usize {
     let mut score = 0;
 
     let line = Line { start, end };
@@ -181,7 +270,7 @@ fn get_score(current_height: u8, trees: &HashMap<Point, Interest>, start: Point,
 pub struct Interest {
     height: u8,
     visible: bool,
-    scenic_score: usize
+    scenic_score: usize,
 }
 
 #[cfg(test)]

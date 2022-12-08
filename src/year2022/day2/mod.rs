@@ -16,7 +16,7 @@ impl Problem<usize, usize> for Day2 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
         let rounds = input.parse_lines(|x| {
             x.parse::<Round>()
-                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+                .map_err(|_| anyhow!("Missing attribute: {}", ""))
         })?;
         Ok(rounds.iter().map(|r| r.score()).sum())
     }
@@ -24,7 +24,7 @@ impl Problem<usize, usize> for Day2 {
     fn part2(&self, input: &ProblemInput) -> Result<usize> {
         let rounds = input.parse_lines(|x| {
             x.parse::<DeterministicRound>()
-                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+                .map_err(|_| anyhow!("Missing attribute: {}", ""))
         })?;
         Ok(rounds.iter().map(|r| r.score()).sum())
     }

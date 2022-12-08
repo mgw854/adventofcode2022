@@ -3,7 +3,6 @@ use std::{ops::RangeInclusive, str::FromStr};
 use crate::{helpers::input::ProblemInput, problem::Problem};
 
 use anyhow::{anyhow, Result};
-use num::iter::Range;
 
 pub struct Day4 {}
 
@@ -17,7 +16,7 @@ impl Problem<usize, usize> for Day4 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
         let pairs = input.parse_lines(|x| {
             x.parse::<AssignmentPair>()
-                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+                .map_err(|_| anyhow!("Missing attribute: {}", ""))
         })?;
 
         let count = pairs.iter().filter(|p| p.is_one_strict_subset()).count();
@@ -28,7 +27,7 @@ impl Problem<usize, usize> for Day4 {
     fn part2(&self, input: &ProblemInput) -> Result<usize> {
         let pairs = input.parse_lines(|x| {
             x.parse::<AssignmentPair>()
-                .map_err(|e| anyhow!("Missing attribute: {}", ""))
+                .map_err(|_| anyhow!("Missing attribute: {}", ""))
         })?;
 
         let count = pairs.iter().filter(|p| p.is_overlap()).count();
@@ -38,23 +37,23 @@ impl Problem<usize, usize> for Day4 {
 }
 
 pub struct AssignmentPair {
-    pub firstElf: RangeInclusive<usize>,
-    pub secondElf: RangeInclusive<usize>,
+    pub first_elf: RangeInclusive<usize>,
+    pub second_elf: RangeInclusive<usize>,
 }
 
 impl AssignmentPair {
     fn is_one_strict_subset(&self) -> bool {
-        (self.firstElf.start() <= self.secondElf.start()
-            && self.firstElf.end() >= self.secondElf.end())
-            || (self.secondElf.start() <= self.firstElf.start()
-                && self.secondElf.end() >= self.firstElf.end())
+        (self.first_elf.start() <= self.second_elf.start()
+            && self.first_elf.end() >= self.second_elf.end())
+            || (self.second_elf.start() <= self.first_elf.start()
+                && self.second_elf.end() >= self.first_elf.end())
     }
 
     fn is_overlap(&self) -> bool {
-        (self.firstElf.start() <= self.secondElf.start()
-            && self.firstElf.end() >= self.secondElf.start())
-            || (self.secondElf.start() <= self.firstElf.start()
-                && self.secondElf.end() >= self.firstElf.start())
+        (self.first_elf.start() <= self.second_elf.start()
+            && self.first_elf.end() >= self.second_elf.start())
+            || (self.second_elf.start() <= self.first_elf.start()
+                && self.second_elf.end() >= self.first_elf.start())
     }
 }
 
@@ -72,8 +71,8 @@ impl FromStr for AssignmentPair {
             .collect();
 
         Ok(AssignmentPair {
-            firstElf: RangeInclusive::new(matches[0][0], matches[0][1]),
-            secondElf: RangeInclusive::new(matches[1][0], matches[1][1]),
+            first_elf: RangeInclusive::new(matches[0][0], matches[0][1]),
+            second_elf: RangeInclusive::new(matches[1][0], matches[1][1]),
         })
     }
 }
