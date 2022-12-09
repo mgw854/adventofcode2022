@@ -1,6 +1,6 @@
 use crate::{helpers::input::ProblemInput, problem::Problem};
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 
 pub struct Day0 {}
 
