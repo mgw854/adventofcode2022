@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{helpers::input::ProblemInput, problem::Problem};
 
 use anyhow::Result;
@@ -12,15 +14,16 @@ impl Default for Day7 {
 
 impl Problem<usize, usize> for Day7 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
-        let mut stack: Vec<&FsObject> = Vec::new();
-        let root = FsObject::Directory {
+        let mut stack: Vec<&Directory> = Vec::new();
+
+        let root = Directory {
             name: "/".to_string(),
-            children: Vec::new(),
         };
 
-        let mut dirs : HashMap<&FsObject, Vec<FsObject>> = HashMap::new();
+        let mut dirs: HashMap<&str, Vec<Directory>> = HashMap::new();
+        let mut files: HashMap<&Directory, Vec<File>> = HashMap::new();
 
-        stack.push(root);
+        stack.push(&root);
 
         for l in input.value().lines() {
             if l.starts_with('$') {
@@ -32,41 +35,48 @@ impl Problem<usize, usize> for Day7 {
                     } else if dirname == "/" {
                         // Do nothing
                     } else {
-                        let head = stack.last().unwrap();
+                        let parent = stack[stack.len() - 1];
 
-                        let child = dirs.get(head).unwrap().iter().filter(|x| match x { FsObject::Directory { name: name, .. } => name == dirname, _ => false }).next().unwrap();
+                        let child = dirs
+                            .entry(&parent.name)
+                            .or_default()
+                            .iter()
+                            .filter(|x| x.name == dirname)
+                            .next()
+                            .unwrap();
 
-                        match stack.last().unwrap() {
-                            FsObject::Directory => {
-                                stack.push(child);
-                            }
-                            _ => {}
-                        }
+                        stack.push(child);
                     }
                 }
-
-                continue;
-            }
+            } else {
 
             let parts = l.split(' ').collect::<Vec<&str>>();
-
+            let parent = stack[stack.len() - 1];
             if parts[0] == "dir" {
-                match stack[0] {
-                    FsObject::Directory { children: x, .. } => x.push(FsObject::Directory {
+                dirs.entry(&parent.name)
+                    .and_modify(|e| {
+                        e.push(Directory {
+                            name: parts[1].to_string(),
+                        })
+                    })
+                    .or_insert(vec![Directory {
                         name: parts[1].to_string(),
-                        children: Vec::new(),
-                    }),
-                    _ => {}
-                }
+                    }]);
             } else {
-                match stack[0] {
-                    FsObject::Directory { children: x, .. } => x.push(FsObject::File {
+                files
+                    .entry(parent)
+                    .and_modify(|e| {
+                        e.push(File {
+                            name: parts[1].to_string(),
+                            size: parts[0].parse::<usize>().unwrap(),
+                        })
+                    })
+                    .or_insert(vec![File {
                         name: parts[1].to_string(),
                         size: parts[0].parse::<usize>().unwrap(),
-                    }),
-                    _ => {}
-                }
+                    }]);
             }
+        }
         }
 
         Ok(0)
@@ -77,24 +87,15 @@ impl Problem<usize, usize> for Day7 {
     }
 }
 
-pub enum FsObject {
-    Directory {
-        name: String,
-        children: Vec<FsObject>,
-    },
-    File {
-        name: String,
-        size: usize,
-    },
+#[derive(Hash, PartialEq, Eq, Clone)]
+struct Directory {
+    name: String,
 }
 
-impl FsObject {
-    fn size(&self) -> usize {
-        match self {
-            FsObject::Directory { children: x, .. } => x.iter().map(|e| e.size()).sum(),
-            FsObject::File { size: size, .. } => *size,
-        }
-    }
+#[derive(Hash, PartialEq, Eq, Clone)]
+struct File {
+    name: String,
+    size: usize,
 }
 
 #[cfg(test)]

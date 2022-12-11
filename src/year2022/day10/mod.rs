@@ -57,7 +57,7 @@ impl Problem<i64, String> for Day10 {
 
         let mut x: i64 = 1;
         let mut cycle: i64 = 0;
-        let mut pos : i64 = -1;
+        let mut pos: i64 = -1;
 
         let mut crt = String::new();
 
@@ -72,7 +72,7 @@ impl Problem<i64, String> for Day10 {
             } else {
                 dbg!(cycle);
                 dbg!(x);
-               crt.push('.');
+                crt.push('.');
             }
 
             if cycle % 40 == 0 {
@@ -91,12 +91,12 @@ impl Problem<i64, String> for Day10 {
                     } else {
                         dbg!(cycle);
                         dbg!(x);
-                             crt.push('.');
+                        crt.push('.');
                     }
-        
+
                     if cycle % 40 == 0 {
                         crt.push('\n');
-                    }        
+                    }
                 }
                 OpCode::Noop => {}
             };
