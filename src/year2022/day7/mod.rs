@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use crate::{helpers::input::ProblemInput, problem::Problem};
 
 use anyhow::Result;
+use daggy::Dag;
 
 pub struct Day7 {}
 
@@ -14,18 +15,83 @@ impl Default for Day7 {
 
 impl Problem<usize, usize> for Day7 {
     fn part1(&self, input: &ProblemInput) -> Result<usize> {
-        let mut stack: Vec<&Directory> = Vec::new();
+        let mut stack: Vec<&str> = Vec::new();
 
-        let root = Directory {
-            name: "/".to_string(),
-        };
+        let mut files: HashMap<&str, Vec<File>> = HashMap::new();
 
-        let mut dirs: HashMap<&str, Vec<Directory>> = HashMap::new();
-        let mut files: HashMap<&Directory, Vec<File>> = HashMap::new();
+        // First pass puts files in folders
+        for l in input.value().lines() {
+            if l.starts_with('$') {
+                if l.starts_with("$ cd ") {
+                    let dirname = &l[5..];
 
-        stack.push(&root);
+                    if dirname == ".." {
+                        stack.pop();
+                    } else {
+                        stack.push(dirname);
+                    }
+                }
+            } else {
+                let parts = l.split(' ').collect::<Vec<&str>>();
+                let parent = stack[stack.len() - 1];
+
+                if parts[0] != "dir" {
+                    files
+                        .entry(parent)
+                        .and_modify(|e| {
+                            e.push(File {
+                                name: parts[1].to_string(),
+                                size: parts[0].parse::<usize>().unwrap(),
+                            })
+                        })
+                        .or_insert(vec![File {
+                            name: parts[1].to_string(),
+                            size: parts[0].parse::<usize>().unwrap(),
+                        }]);
+                }
+            }
+        }
+
+        stack.clear();
+
+        // Second pass puts folders in folders
+        let mut dag = Dag::<&str, usize>::new();
+        let mut head = dag.add_node("/");
 
         for l in input.value().lines() {
+            if l.starts_with('$') {
+                if l.starts_with("$ cd ") {
+                    let dirname = &l[5..];
+
+                    if dirname == ".." {
+                        dag.
+                    } else {
+                        stack.push(dirname);
+                    }
+                }
+            } else {
+                let parts = l.split(' ').collect::<Vec<&str>>();
+                let parent = stack[stack.len() - 1];
+
+                if parts[0] != "dir" {
+                    files
+                        .entry(parent)
+                        .and_modify(|e| {
+                            e.push(File {
+                                name: parts[1].to_string(),
+                                size: parts[0].parse::<usize>().unwrap(),
+                            })
+                        })
+                        .or_insert(vec![File {
+                            name: parts[1].to_string(),
+                            size: parts[0].parse::<usize>().unwrap(),
+                        }]);
+                }
+            }
+        }
+
+        for l in input.value().lines() {
+
             if l.starts_with('$') {
                 if l.starts_with("$ cd ") {
                     let dirname = &l[5..];
@@ -48,12 +114,14 @@ impl Problem<usize, usize> for Day7 {
                         stack.push(child);
                     }
                 }
-            } else {
+
+                continue;
+            }
 
             let parts = l.split(' ').collect::<Vec<&str>>();
             let parent = stack[stack.len() - 1];
             if parts[0] == "dir" {
-                dirs.entry(&parent.name)
+                dirs.entry(parent)
                     .and_modify(|e| {
                         e.push(Directory {
                             name: parts[1].to_string(),
@@ -76,7 +144,6 @@ impl Problem<usize, usize> for Day7 {
                         size: parts[0].parse::<usize>().unwrap(),
                     }]);
             }
-        }
         }
 
         Ok(0)
