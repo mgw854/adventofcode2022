@@ -1,9 +1,25 @@
-use std::ops::Add;
+use std::{ops::Add, str::FromStr};
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct Point {
     pub x: usize,
     pub y: usize,
+}
+
+impl FromStr for Point {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let values = s
+            .split(',')
+            .map(|p| p.parse::<usize>().unwrap())
+            .collect::<Vec<usize>>();
+
+        Ok(Point {
+            x: values[0],
+            y: values[1],
+        })
+    }
 }
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
