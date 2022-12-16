@@ -4,3 +4,4 @@ pub mod geography;
 pub mod graphplot;
 pub mod input;
 pub mod topography;
+pub mod negativegraphplot;

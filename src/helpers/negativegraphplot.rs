@@ -2,8 +2,8 @@ use std::{ops::Add, str::FromStr};
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy, Ord, PartialOrd)]
 pub struct Point {
-    pub x: usize,
-    pub y: usize,
+    pub x: i64,
+    pub y: i64,
 }
 
 impl FromStr for Point {
@@ -12,8 +12,8 @@ impl FromStr for Point {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let values = s
             .split(',')
-            .map(|p| p.parse::<usize>().unwrap())
-            .collect::<Vec<usize>>();
+            .map(|p| p.parse::<i64>().unwrap())
+            .collect::<Vec<i64>>();
 
         Ok(Point {
             x: values[0],
@@ -36,8 +36,8 @@ pub struct Line {
 impl Add<Slope> for Point {
     fn add(self, other: Slope) -> Self {
         Self {
-            x: (self.x as i64 + other.dx) as usize,
-            y: (self.y as i64 + other.dy) as usize,
+            x: (self.x + other.dx),
+            y: (self.y + other.dy)
         }
     }
     type Output = Point;
@@ -46,8 +46,8 @@ impl Add<Slope> for Point {
 impl Add<&Slope> for Point {
     fn add(self, other: &Slope) -> Self {
         Self {
-            x: (self.x as i64 + other.dx) as usize,
-            y: (self.y as i64 + other.dy) as usize,
+            x: (self.x + other.dx),
+            y: (self.y + other.dy)
         }
     }
     type Output = Point;
@@ -62,13 +62,13 @@ impl From<Slope> for f64 {
 impl Point {
     pub fn slope_between(&self, other: &Point) -> Slope {
         Slope {
-            dy: -1 * (self.y as i64 - other.y as i64),
-            dx: -1 * (self.x as i64 - other.x as i64),
+            dy: -1 * (self.y - other.y),
+            dx: -1 * (self.x - other.x),
         }
     }
 
-    pub fn manhattan_distance(&self, other: &Point) -> usize {
-        self.x.abs_diff(other.x) + self.y.abs_diff(other.y)      
+    pub fn manhattan_distance(&self, other: &Point) -> i64 {
+        (self.x.abs_diff(other.x) + self.y.abs_diff(other.y)) as i64     
     }
 }
 

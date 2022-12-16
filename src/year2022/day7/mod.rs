@@ -64,7 +64,7 @@ impl Problem<usize, usize> for Day7 {
                     let dirname = &l[5..];
 
                     if dirname == ".." {
-                        dag.
+                        //dag.
                     } else {
                         stack.push(dirname);
                     }
